@@ -42,7 +42,7 @@
 <script>
 export default {
   layout: 'login-layout',
-  middleware: 'isLoggedIn',
+  middleware: 'guest',
   data () {
     return {
       username: '',

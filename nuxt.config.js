@@ -48,6 +48,7 @@ export default {
     '@nuxtjs/axios',
     '@nuxt/content',
     '@nuxtjs/auth',
+    'cookie-universal-nuxt',
     '@nuxtjs/dotenv',
     'nuxt-browser-console',
   ],
@@ -74,8 +75,13 @@ export default {
         },
       },
     },
+    cookie: {
+      options: {
+        secure: false
+      }
+    },
     redirect: {
-      login: '/login',
+      login: '/login'
     },
   },
 

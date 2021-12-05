@@ -78,7 +78,10 @@ html, body {
     color: hsl(0, 0%, 96%) !important;
     background-color: #0d1117 !important; 
 }
-.has-mobile-cards table tr td i, table tr td i, .has-mobile-cards table tr td a, table tr td a {
+.has-mobile-cards table tr td a i, table tr td a i {
+    color: hsl(0, 0%, 96%) !important;
+}
+.has-mobile-cards table tr td a, table tr td a {
     color: hsl(0, 0%, 96%) !important;
 }
 table tr.detail td {
@@ -194,6 +197,21 @@ table tr.detail td {
     border: 1px solid #30363d !important; 
 }
 
+
+
+
+//Page
+.docs-header {
+    border-bottom: 1px solid #30363d;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+}
+.breadcrumb a {
+    color: hsl(217, 71%, 53%) !important;
+}
+.breadcrumb a:hover {
+    text-decoration: underline !important;
+}
 
 
 // Import Bulma and Buefy styles

@@ -6,7 +6,7 @@
             <!-- รับหนังสือ -->
             <b-tab-item label="รับหนังสือ" icon="arrow-down">
                 
-                <div v-show="loggedIn" class="mb-4">
+                <div v-show="isAuthenticated" class="mb-4">
                    <b-button
                         label="รับหนังสือ"
                         type="is-success"
@@ -44,7 +44,7 @@
                     </b-table-column>
 
                     
-                    <b-table-column v-if="loggedIn"  v-slot="props" label="" >
+                    <b-table-column v-if="isAuthenticated"  v-slot="props" label="" >
                         <div class="field is-grouped">
                             <p class="control">
                                 <a class="button is-dark is-small is-outlined" @click="editItem(props.row)">
@@ -56,7 +56,7 @@
                                     <b-icon icon="delete" size="is-small"></b-icon>
                                 </a>
                             </p>
-                        </div>
+                        </div> 
                     </b-table-column>
 
                     <template #detail="props">
@@ -87,7 +87,7 @@
 
 <script>
 import CryptoJS from 'crypto-js'
-import { mapState } from 'vuex'
+import { mapGetters } from 'vuex'
 import ModalReceive from '~/components/ModalFormReceive'
 
 
@@ -107,7 +107,7 @@ export default {
         }
     }, 
     computed: {
-        ...mapState('auth', ['loggedIn']),
+        ...mapGetters(['isAuthenticated']),
     },
     mounted () {
         this.fetchData()
