@@ -1,0 +1,201 @@
+// Import Bulma's core
+@import "~bulma/sass/utilities/_all";
+
+// Set your colors
+$primary: #161b22;
+$primary-invert: findColorInvert($primary);
+$twitter: #4099FF;
+$twitter-invert: findColorInvert($twitter);
+$pinkish: #ff99aa;
+$pinkish-invert: findColorInvert($pinkish);
+
+// Setup $colors to use as bulma classes (e.g. 'is-twitter')
+$colors: (
+    "white": ($white, $black),
+    "black": ($black, $white),
+    "light": ($light, $light-invert),
+    "dark": ($dark, $dark-invert),
+    "primary": ($primary, $primary-invert),
+    "info": ($info, $info-invert),
+    "success": ($success, $success-invert),
+    "warning": ($warning, $warning-invert),
+    "danger": ($danger, $danger-invert),
+    "twitter": ($twitter, $twitter-invert),
+    "pinkish": ($pinkish, $pinkish-invert)
+);
+
+// Links
+$link: $primary;
+$link-invert: $primary-invert;
+$link-focus-border: $primary;
+
+html, body {
+    font-family: "IBM Plex Sans" !important;
+    background-color: #0d1117 !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+
+
+//login
+.box .login-input-bg {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+}
+.box input:focus { 
+    outline: none !important;
+    border-color: #effaf5;
+    box-shadow: 0 0 3px #effaf5;
+}
+
+
+//tab
+.tabs ul {
+    border-bottom-color: #30363d !important; 
+}
+.tabs li a {
+    border-bottom-color: #30363d !important; 
+    color: hsl(0, 0%, 71%) !important;
+}
+.tabs li.is-active a {
+    border-bottom-color: hsl(217, 71%, 53%) !important; 
+    color: hsl(0, 0%, 96%) !important;
+}
+
+
+//table
+.has-mobile-cards table, table {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.has-mobile-cards table th, table th {
+    background-color: #161b22;
+    border-bottom: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.has-mobile-cards table th td, table tr td {
+    border-bottom: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+    background-color: #0d1117 !important; 
+}
+.has-mobile-cards table tr td i, table tr td i, .has-mobile-cards table tr td a, table tr td a {
+    color: hsl(0, 0%, 96%) !important;
+}
+table tr.detail td {
+    background-color: #0d1117 !important; 
+    color: hsl(0, 0%, 96%) !important;
+    border-bottom: 1px solid #30363d !important;
+}
+
+//pagination
+.pagination-previous, .pagination-next, .pagination-link {
+    border-color: #30363d !important; 
+    color: hsl(0, 0%, 96%) !important;
+}
+
+
+//navbar
+.navbar-menu  {
+    background-color: $primary !important;
+}
+.navbar-menu a {
+    color: hsl(0, 0%, 96%) !important;
+}
+.navbar-menu a:hover {
+    color: hsl(0, 0%, 71%) !important;
+    background: transparent !important;
+}
+.dropdown-content {
+    background-color: $primary !important;
+    border: 1px solid #30363d !important; 
+}
+.dropdown-content a {
+    color: hsl(0, 0%, 96%) !important;
+}
+.dropdown-content a:hover {
+    color: hsl(0, 0%, 71%) !important;
+    background: transparent !important;
+}
+.dropdown-content .dropdown-divider {
+    border-top: 1px solid #30363d !important; 
+}
+.dropdown-content a .icon {
+    color: hsl(0, 0%, 96%) !important;
+}
+.dropdown-item {
+    color: hsl(0, 0%, 96%) !important;
+}
+.autocomplete .dropdown-item.is-hovered {
+    background: transparent !important;;
+}
+.dropdown .navbar-item {
+    padding: 0.5rem 0.2rem !important;
+}
+.dropdown .icon.g-icon-arrow {
+    margin-left: -7px !important;
+} 
+.dropdown .mdi-24px.mdi:before {
+    font-size: 20px !important;
+}
+  
+
+
+//modal
+.modal-card-head {
+    background-color: $primary !important;
+    border: 1px solid #30363d !important; 
+}
+.modal-card-head .modal-card-title {
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body {
+    color: hsl(0, 0%, 96%) !important;
+    background-color: #0d1117 !important;
+}
+.modal-card-body .input {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body input:focus { 
+    outline: none !important;
+    border-color: #effaf5;
+    box-shadow: 0 0 3px #effaf5;
+}
+.modal-card-body input::placeholder { 
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body .textarea {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body textarea:focus {
+    outline: none !important;
+    border-color: #effaf5;
+    box-shadow: 0 0 3px #effaf5;
+}
+.modal-card-body .select select {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body .select select option {
+    color: hsl(0, 0%, 71%) !important;
+}
+.modal-card-body .select.is-empty::after {
+    border-color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-body label { 
+    color: hsl(0, 0%, 96%) !important;
+}
+.modal-card-foot {
+    background-color: $primary !important;
+    border: 1px solid #30363d !important; 
+}
+
+
+
+// Import Bulma and Buefy styles
+@import "~bulma";
+@import "~buefy/src/scss/buefy";
