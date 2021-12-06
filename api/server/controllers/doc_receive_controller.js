@@ -179,7 +179,7 @@ const getDocReceiveAll = async (req, res) => {
 
       return res.status(200).json(data); 
   } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error'+error });
+      res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 

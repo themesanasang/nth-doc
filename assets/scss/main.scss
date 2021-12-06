@@ -36,6 +36,19 @@ html, body {
 }
 
 
+::-webkit-input-placeholder { /* Edge */
+    color: hsl(0, 0%, 96%) !important;
+}
+  
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: hsl(0, 0%, 96%) !important;
+}
+  
+::placeholder {
+    color: hsl(0, 0%, 96%) !important;
+}
+
+
 //login
 .box .login-input-bg {
     background-color: #0d1117 !important; 
@@ -89,6 +102,17 @@ table tr.detail td {
     color: hsl(0, 0%, 96%) !important;
     border-bottom: 1px solid #30363d !important;
 }
+table input[type=text] {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+table input[type=text]:focus {
+    outline: none !important;
+    border-color: #effaf5;
+    box-shadow: 0 0 3px #effaf5;
+}
+
 
 //pagination
 .pagination-previous, .pagination-next, .pagination-link {

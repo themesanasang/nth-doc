@@ -1,3 +1,5 @@
+import webpack from 'webpack'
+
 export default {
   serverMiddleware: ['~/api/server/app.js'],
 
@@ -92,6 +94,13 @@ export default {
   build: {
     extend(config) {
       config.resolve.alias['vue'] = 'vue/dist/vue.common'
-    }
+    },
+    plugins: [
+      new webpack.ProvidePlugin({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery'
+      })
+    ]
   }
 }

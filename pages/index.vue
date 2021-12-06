@@ -27,19 +27,19 @@
                     aria-previous-label="Previous page"
                     aria-current-label="Current page">
 
-                    <b-table-column v-slot="props" field="book_number" label="เลขหนังสือ" width="180">
+                    <b-table-column v-slot="props" field="book_number" label="เลขหนังสือ" width="180" sortable searchable>
                         <a @click="props.toggleDetails(props.row)">
                             {{ props.row.book_number }}
                         </a>
                     </b-table-column>
 
-                    <b-table-column v-slot="props" field="book_name"  label="ชื่อหนังสือ" sortable>
+                    <b-table-column v-slot="props" field="book_name"  label="ชื่อหนังสือ" sortable searchable>
                         <a @click="props.toggleDetails(props.row)">
                             {{ props.row.book_name }}
                         </a>
                     </b-table-column>
 
-                    <b-table-column v-slot="props" field="date_receive" label="วันที่รับ" sortable centered width="150">
+                    <b-table-column v-slot="props" field="date_receive" label="วันที่รับ" sortable searchable centered width="150">
                         {{ props.row.date_receive }}
                     </b-table-column>
 
@@ -110,6 +110,10 @@ export default {
         ...mapGetters(['isAuthenticated']),
     },
     mounted () {
+        $(document).ready(function() {
+            $("table input[type=text]").attr('placeholder', 'ค้นหา...').blur()
+        })
+        
         this.fetchData()
     },
     methods: {

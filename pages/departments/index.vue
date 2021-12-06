@@ -43,7 +43,7 @@
                         {{ props.row.row_num }}
                     </b-table-column>
 
-                    <b-table-column v-slot="props" field="department" label="แผนก" sortable >
+                    <b-table-column v-slot="props" field="department" label="แผนก" sortable searchable>
                         {{ props.row.department }}
                     </b-table-column>
 
@@ -68,6 +68,10 @@
                             </p>
                         </div>
                     </b-table-column>
+
+                     <template #empty>
+                        <div class="has-text-centered">ไม่มีข้อมูล</div>
+                    </template>
                 </b-table>
             </div>
         </div>
@@ -77,6 +81,8 @@
 </template>
 
 <script>
+import CryptoJS from 'crypto-js'
+import ModalFormDepartmentVue from '../../components/ModalFormDepartment.vue'
 
 export default {
     middleware: ['auth-user'],
@@ -88,6 +94,10 @@ export default {
         }
     }, 
     mounted () {
+        $(document).ready(function() {
+            $("table input[type=text]").attr('placeholder', 'ค้นหา...')
+        })
+
         this.fetchData()
     },
     methods: {
@@ -96,11 +106,114 @@ export default {
             this.departmentData = result.data[0]
         },
         cardModal() {
-
+            this.$buefy.modal.open({
+                parent: this,
+                component: ModalFormDepartmentVue,
+                hasModalCard: true,
+                fullScreen: false,
+                canCancel: false,
+                props: {
+                    typeAction: 'new',
+                    departmentName: '',
+                    departmentStatus: true
+                },
+                events: {
+                    'close':value => {
+                        if(value === 'ok'){
+                            this.fetchData()
+                            this.$buefy.toast.open({message: 'เพิ่มแผนกใหม่ เรียบร้อยแล้ว', type: 'is-success'})
+                        }
+                    }
+                },
+            })
         },
-        deleteAll() {
-            this.$console.log(this.checkedRows)
-        }
+        async editItem(item) {
+            try {
+                const id = String(item.id)
+                const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
+                const result  = await this.$axios.get('/api/v1/department/'+encodeURIComponent(ciphertext))
+
+                this.$buefy.modal.open({
+                    parent: this,
+                    component: ModalFormDepartmentVue,
+                    hasModalCard: true,
+                    fullScreen: false,
+                    canCancel: false,
+                    props: {
+                        typeAction: 'edit',
+                        idDep: result.data[0].id,
+                        departmentName: result.data[0].department,
+                        departmentStatus: ((result.data[0].status === 'Y')?'true':'false')
+                    },
+                    events: {
+                        'close':value => {
+                            if(value === 'ok'){
+                                this.fetchData()
+                                this.$buefy.toast.open({message: 'แก้ไขข้อมูล เรียบร้อยแล้ว', type: 'is-success'})
+                            }
+                        }
+                    },
+                })
+                
+            } catch (error) {
+                
+            }
+        },
+        async deleteItem(item) {
+            try {
+                await this.$buefy.dialog.confirm({
+                    title: 'ลบแผนก',
+                    message: 'คุณต้องการลบหแผนก ใช่ หรือ ไม่',
+                    confirmText: 'ลบ',
+                    cancelText: 'ยกเลิก',
+                    type: 'is-danger',
+                    hasIcon: true,
+                    onConfirm: () => {
+                        try {
+                            const id = String(item.id)
+                            const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
+                            this.$axios.delete('/api/v1/department/'+encodeURIComponent(ciphertext))
+
+                            this.$buefy.toast.open({message: `ลบแผนก หมายเลข `+item.id +' เรียบร้อยแล้ว', type: 'is-success'})
+                            location.reload();
+                        } catch (error) {
+                            this.$buefy.toast.open({message: `ไม่สามารถลบแผนก หมายเลข `+item.id +' ได้', type: 'is-danger'})
+                        }
+                    }
+                })
+            } catch (error) {
+                
+            }
+        },
+        async deleteAll() {
+            // this.$console.log(this.checkedRows)
+            try {
+                await this.$buefy.dialog.confirm({
+                    title: 'ลบแผนก',
+                    message: 'คุณต้องการลบหแผนก ใช่ หรือ ไม่',
+                    confirmText: 'ลบ',
+                    cancelText: 'ยกเลิก',
+                    type: 'is-danger',
+                    hasIcon: true,
+                    onConfirm: () => {
+                        try {
+                            for (const x in this.checkedRows) {
+                                const id = String(this.checkedRows[x].id)
+                                const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
+                                this.$axios.delete('/api/v1/department/'+encodeURIComponent(ciphertext))
+                            }
+
+                            this.$buefy.toast.open({message: `ลบแผนก เรียบร้อยแล้ว`, type: 'is-success'})
+                            location.reload();
+                        } catch (error) {
+                            this.$buefy.toast.open({message: `ไม่สามารถลบแผนก ได้`, type: 'is-danger'})
+                        }
+                    }
+                })
+            } catch (error) {
+                
+            }
+        },
     }
 }
 
