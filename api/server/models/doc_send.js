@@ -14,12 +14,12 @@ module.exports = knex => {
     }
 
     const getIDYearMax = () => knex.select(
-        knex.raw('LEFT(id, 2) as yearmax')
-    )
-    .from(tableName)
-    .orderBy('id', 'desc')
-    .first()
-    .timeout(timeout)
+            knex.raw('LEFT(id, 2) as yearmax')
+        )
+        .from(tableName)
+        .orderBy('id', 'desc')
+        .first()
+        .timeout(timeout)
 
     const getIDMax = () => knex.select(
             knex.raw('RIGHT(id, 4) as idmax')
@@ -59,8 +59,8 @@ module.exports = knex => {
 
     const findOne = (id) => knex.select(
         'doc_send.id', 'doc_send.agency', 'doc_send.receiver', 'doc_send.book_number', 'doc_send.group'
-        , knex.raw('CONCAT(DATE_FORMAT(doc_send.date_receive, "%d-%m-"),DATE_FORMAT(doc_send.date_receive, "%Y")+543) as date_send') 
-        , knex.raw('DATE_FORMAT(doc_send.date_receive, "%Y-%m-%d") as date_r') 
+        , knex.raw('CONCAT(DATE_FORMAT(doc_send.date_send, "%d-%m-"),DATE_FORMAT(doc_send.date_send, "%Y")+543) as date_send') 
+        , knex.raw('DATE_FORMAT(doc_send.date_send, "%Y-%m-%d") as date_r') 
         , 'doc_send.time_send'
         , knex.raw('doc_agency.agency as agency_name')
         , knex.raw('doc_receiver.receiver as receiver_name')

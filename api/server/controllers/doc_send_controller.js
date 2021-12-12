@@ -31,20 +31,37 @@ const {
   } = req.body;  
 
   try {
+      let max;
       let idmax = await DocSend.getIDMax();
-      if(idmax['idmax'] === '' || idmax['idmax'] === null) {
-        idmax['idmax'] = '0001';
+      if(idmax === null || idmax === '' || typeof idmax === 'undefined') {
+        max = '0001';
+      } else {
+        max = idmax['idmax'];
       }
 
       let year_now = dateFormat(new Date(), "yyyy")
       year_now = (parseInt(year_now) + 543)
       let id = ''; 
+      
       let yearmax = await DocSend.getIDYearMax(); 
-
-      if(yearmax['yearmax'] !== year_now.toString().substr(2)) {
+      if(yearmax === null || yearmax === '' || typeof yearmax === 'undefined'){
         id = year_now.toString().substr(2)+'0001';
       } else {
-        id = yearmax['yearmax']+''+(parseInt(idmax['idmax'])+1);
+        if(yearmax['yearmax'] !== year_now.toString().substr(2)) {
+          id = year_now.toString().substr(2)+'0001';
+        } else {
+          let mm = (parseInt(max)+1);
+
+          if(String(mm).length === 1){
+            mm = '000'+mm;
+          }else if(String(mm).length === 2) {
+            mm = '00'+mm;
+          }else if(String(mm).length === 3) {
+            mm = '0'+mm;
+          }
+
+          id = yearmax['yearmax']+''+mm;
+        }
       }
 
       let created_at = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
@@ -68,7 +85,7 @@ const {
 
       return res.status(200).json(data);
   } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error' });
+      res.status(500).json({ error: 'Internal Server Error'+error });
   }
 }
 
