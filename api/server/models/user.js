@@ -25,11 +25,17 @@ module.exports = knex => {
     .first()
     .timeout(timeout)
 
+
     const countByUsernamePassword = (username, password) => knex.count('username as numrow')
     .from(tableName)
     .whereRaw('username = ?', [username])
     .whereRaw('password = ?', [password])
     .first()
+    .timeout(timeout)
+
+    const findByUsername = (username) => knex.select('*')
+    .from(tableName)
+    .whereRaw('username = ?', [username])
     .timeout(timeout)
 
     const findByUsernamePassword = (username, password) => knex.select('*')
@@ -45,18 +51,18 @@ module.exports = knex => {
 
 
     const findAll = () => knex.select(
-        'doc_user.*'
+        'doc_user.uuid', 'doc_user.username', 'doc_user.firstname', 'doc_user.lastname', 'doc_user.email', 'doc_user.line_id', 'doc_user.department', 'doc_user.status'
         , knex.raw('doc_department.department as department_name')
         , knex.raw('CONCAT(DATE_FORMAT(doc_user.created_at, "%d-%m-"),DATE_FORMAT(doc_user.created_at, "%Y")+543) as date_create') 
         , knex.raw('CONCAT(DATE_FORMAT(doc_user.updated_at, "%d-%m-"),DATE_FORMAT(doc_user.updated_at, "%Y")+543) as date_update') 
     )
     .from(tableName)
     .leftJoin('doc_department', 'doc_department.id', '=', 'doc_user.department')
-    .orderBy('id', 'desc')
+    .orderBy('doc_user.id', 'desc')
     .timeout(timeout)
 
     const findOne = (uuid) => knex.select(
-        'doc_user.*'
+        'doc_user.uuid', 'doc_user.username', 'doc_user.firstname', 'doc_user.lastname', 'doc_user.email', 'doc_user.line_id', 'doc_user.department', 'doc_user.status'
         , knex.raw('doc_department.department as department_name')
         , knex.raw('CONCAT(DATE_FORMAT(doc_user.created_at, "%d-%m-"),DATE_FORMAT(doc_user.created_at, "%Y")+543) as date_create') 
         , knex.raw('CONCAT(DATE_FORMAT(doc_user.updated_at, "%d-%m-"),DATE_FORMAT(doc_user.updated_at, "%Y")+543) as date_update') 
@@ -73,17 +79,38 @@ module.exports = knex => {
         .timeout(timeout)
     }
 
+    const destroy = uuid => knex.del()
+    .from(tableName)
+    .whereRaw('uuid = ?', [uuid])
+    .timeout(timeout)
+
+    const countWorkReceive = (uuid) => knex.count('created_by as numrow')
+    .from('doc_receive')
+    .whereRaw('created_by = ?', [uuid])
+    .first()
+    .timeout(timeout)
+
+    const countWorkSend = (uuid) => knex.count('created_by as numrow')
+    .from('doc_send')
+    .whereRaw('created_by = ?', [uuid])
+    .first()
+    .timeout(timeout)
+
     return {
         name, 
         create,
         countByUUID,
         countByUsername,
         countByUsernamePassword,
+        findByUsername,
         findByUsernamePassword,
         findByID,
         findAll,
         findOne,
-        update
+        update,
+        destroy,
+        countWorkReceive,
+        countWorkSend
     }
     
 }

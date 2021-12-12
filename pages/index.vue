@@ -135,7 +135,7 @@ export default {
                     agencyNameData: '',
                     bookNumberData: '',
                     bookNameData: '',
-                    groupNameData: '',
+                    groupNameData: null,
                     bookDateData: new Date(),
                     receiverNameData: '',
                     noteData: '',

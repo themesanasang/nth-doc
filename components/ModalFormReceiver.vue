@@ -2,13 +2,13 @@
    
    <div class="modal-card" style="width: 320px">
         <header class="modal-card-head">
-            <p class="modal-card-title">แผนก</p>
+            <p class="modal-card-title">หน่วยงานผู้รับ</p>
         </header>
         <section class="modal-card-body">
 
-            <b-field label="ชื่อแผนก *" :type="{ 'is-danger': hasDepError }" :message="{ 'กรุณากรอกชื่อแผนก': hasDepError }" >
+            <b-field label="หน่วยงานผู้รับ *" :type="{ 'is-danger': hasReceiverError }" :message="{ 'กรุณากรอกชื่อหน่วยงานผู้รับ': hasReceiverError }" >
                 <b-input
-                    v-model="department"
+                    v-model="receiver"
                     type="text">
                 </b-input>
             </b-field>
@@ -43,42 +43,42 @@ export default {
             type: String,
             required: true
         },
-        idDep: {
+        idReceiver: {
             type: String,
             required: true
         },
-        departmentName: {
+        receiverName: {
             type: String,
             required: true
         },
-        departmentStatus: {
+        receiverStatus: {
             type: String,
             required: true
         }
     },
     data() {
        return {
-        department: this.departmentName,
-        status: this.departmentStatus,
+        receiver: this.receiverName,
+        status: this.receiverStatus,
 
-        hasDepError: false,
+        hasReceiverError: false,
         dataPost: {
-            department: '',
+            receiver: '',
             status: '',
         }
        }
     },
     methods: {  
         async save () {
-            this.hasDepError = false;
+            this.hasReceiverError = false;
 
-            if(this.department === '' || this.department === null) {
-                this.hasDepError = true
+            if(this.receiver === '' || this.receiver === null) {
+                this.hasReceiverError = true
                 return
             }
 
             this.dataPost = {
-                department: this.department,
+                receiver: this.receiver,
                 status: ((this.status === true || this.status === 'true')?'Y':'N')
             }
 
@@ -87,11 +87,11 @@ export default {
                 let result = ''
 
                 if(this.typeAction === 'new') {
-                    result = await this.$axios.$post(`/api/v1/department`,  this.dataPost)
+                    result = await this.$axios.$post(`/api/v1/doc/receiver`,  this.dataPost)
                 } else {
-                    const id = String(this.idDep)
+                    const id = String(this.idReceiver)
                     const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
-                    result = await this.$axios.$put(`/api/v1/department/`+encodeURIComponent(ciphertext),  this.dataPost)
+                    result = await this.$axios.$put(`/api/v1/doc/receiver/`+encodeURIComponent(ciphertext),  this.dataPost)
                 }
                 
                 if (result) {

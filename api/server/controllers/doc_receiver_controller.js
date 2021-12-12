@@ -17,7 +17,8 @@ const {
   */
 const postDocReceiver = async (req, res) => {
     let { 
-        receiver
+        receiver,
+        status
     } = req.body;  
 
   try {
@@ -27,7 +28,8 @@ const postDocReceiver = async (req, res) => {
         }  
 
       let data = await DocReceiver.create({
-        receiver
+        receiver,
+        status
       });
 
       return res.status(200).json(data);
@@ -42,7 +44,28 @@ const postDocReceiver = async (req, res) => {
   * @param {object} res - The response payload sent doc receiver from the method
   * @returns {object} - doc receiver all
   */
-const getDocReceiverAll = async (req, res) => {
+const getDocReceiverAllOpen = async (req, res) => {
+  try {
+    const receiver = await DocReceiver.findAllOpen();
+    if (!receiver) {
+      return errorResponse(res, 404, 'receiver_04', 'receiver does not exist.');
+    }
+    return res.status(200).json(receiver);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+
+
+/**
+  * @description -This method returns detail of  doc receiver
+  * @param {object} req - The request payload
+  * @param {object} res - The response payload sent doc receiver from the method
+  * @returns {object} - doc receiver all
+  */
+ const getDocReceiverAll = async (req, res) => {
   try {
     const receiver = await DocReceiver.findAll();
     if (!receiver) {
@@ -53,6 +76,10 @@ const getDocReceiverAll = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+
+
+
 
 /**
   * @description -This method get doc receiver detail
@@ -99,7 +126,8 @@ const getDocReceiver = async (req, res) => {
         let id = bytes.toString(CryptoJS.enc.Utf8);
 
         let { 
-            receiver
+            receiver,
+            status
         } = req.body;  
   
         let existingDocReceiver =  await DocReceiver.countById(id);
@@ -108,7 +136,8 @@ const getDocReceiver = async (req, res) => {
         }  
       
         let doc_receiver =  await DocReceiver.update(id, {
-            receiver
+            receiver,
+            status
         });
 
         return res.status(200).json(doc_receiver); 
@@ -135,7 +164,17 @@ const deleteDocReceiver = async (req, res) => {
       return errorResponse(res, 404, 'receiver_01', 'No receiver found', 'id'); 
     }  
 
-    await DocReceiver.destroy(id);
+    let countWorkReceive = await DocReceiver.countWorkReceive(id);
+    let countWorkSend = await DocReceiver.countWorkSend(id);
+
+    if (countWorkReceive['numrow'] > 0 || countWorkSend['numrow'] > 0) {
+      let status = 'N';
+      await DocReceiver.update(id, {
+        status
+      });
+    } else {
+      await DocReceiver.destroy(id);
+    }
 
     return res.status(204).json();
   } catch (error) {
@@ -146,6 +185,7 @@ const deleteDocReceiver = async (req, res) => {
 module.exports = {
     postDocReceiver,
     getDocReceiverAll,
+    getDocReceiverAllOpen,
     getDocReceiver,
     updateDocReceiver,
     deleteDocReceiver

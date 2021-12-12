@@ -57,8 +57,8 @@
                         trap-focus>
                     </b-datepicker>
                 </b-field>
-                 <b-field label="ประเภทหนังสือ *" :type="{ 'is-danger': hasGroupidError }" :message="{ 'กรุณาเลือกประเภทหนังสือ': hasGroupidError }"  expanded>
-                    <b-select v-model="groupName" placeholder="เลือกประเภทหนังสือ">
+                 <b-field label="ประเภทหนังสือ *" :type="{ 'is-danger': hasGroupidError }" :message="{ 'กรุณาเลือกประเภทหนังสือ': hasGroupidError }" expanded>
+                    <b-select v-model="groupName" placeholder="เลือกประเภทหนังสือ" expanded>
                         <option v-for="item in docgroupData" :key="item.id" :value="item.id" >
                             {{ item.group }}
                         </option>
@@ -66,8 +66,6 @@
                 </b-field>
             </b-field>
             
-            
-
             <b-field grouped>
                 <b-field label="ชื่อหนังสือ *" :type="{ 'is-danger': hasBooknameError }" :message="{ 'กรุณากรอกชื่อหนังสือ': hasBooknameError }" expanded>
                     <b-input
@@ -208,13 +206,13 @@ export default {
         }
     },
     async fetch() {
-        const group = await this.$axios.get('/api/v1/doc/group')
+        const group = await this.$axios.get('/api/v1/doc/group/open')
         this.docgroupData = group.data;
 
-        const agencyData = await this.$axios.get('/api/v1/doc/agency')
+        const agencyData = await this.$axios.get('/api/v1/doc/agency/open')
         this.docagencyData = agencyData.data;
 
-        const reciverData = await this.$axios.get('/api/v1/doc/receiver')
+        const reciverData = await this.$axios.get('/api/v1/doc/receiver/open')
         this.docreceiverData = reciverData.data;
     },
     computed: {

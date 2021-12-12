@@ -11,7 +11,7 @@ export default {
     return match;
   },
   createToken(user) {
-    return jwt.sign({ uid: user[0].id, username: user[0].username, firstname: user[0].firstname }, process.env.JWT_ENCRYPTION, { expiresIn: process.env.JWT_EXPIRATION });
+    return jwt.sign({ uid: user.uuid, username: user.username, firstname: user.firstname }, process.env.JWT_ENCRYPTION, { expiresIn: process.env.JWT_EXPIRATION });
   },
   errorResponse(res, status, code, message, field) {
     return res.status(status).json({

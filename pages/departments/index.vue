@@ -76,7 +76,6 @@
             </div>
         </div>
        
-       
     </section>
 </template>
 
@@ -94,7 +93,7 @@ export default {
         }
     }, 
     mounted () {
-        $(document).ready(function() {
+        $(function(){
             $("table input[type=text]").attr('placeholder', 'ค้นหา...')
         })
 
@@ -163,7 +162,7 @@ export default {
             try {
                 await this.$buefy.dialog.confirm({
                     title: 'ลบแผนก',
-                    message: 'คุณต้องการลบหแผนก ใช่ หรือ ไม่',
+                    message: 'คุณต้องการลบแผนก ใช่ หรือ ไม่',
                     confirmText: 'ลบ',
                     cancelText: 'ยกเลิก',
                     type: 'is-danger',

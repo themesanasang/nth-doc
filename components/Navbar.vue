@@ -35,17 +35,17 @@
                     <b-dropdown-item aria-role="listitem" value="departments">
                         <NuxtLink to="departments">แผนก</NuxtLink>
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" value="user">
+                    <b-dropdown-item aria-role="listitem" value="users">
                         <NuxtLink to="users">ผู้ใช้งาน</NuxtLink>
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" value="agency">
+                    <b-dropdown-item aria-role="listitem" value="agencys">
                         <NuxtLink to="agencys">หน่วยงานส่ง</NuxtLink>
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" value="receiver">
+                    <b-dropdown-item aria-role="listitem" value="receivers">
                         <NuxtLink to="receivers">ผู้รับ</NuxtLink>
                     </b-dropdown-item>
-                    <b-dropdown-item aria-role="listitem" value="doctype">
-                        <NuxtLink to="doctypes">ประเภทหนังสือ</NuxtLink>
+                    <b-dropdown-item aria-role="listitem" value="docgroup">
+                        <NuxtLink to="docgroups">หมวดหนังสือ</NuxtLink>
                     </b-dropdown-item>
                 </b-dropdown>
                 <b-dropdown

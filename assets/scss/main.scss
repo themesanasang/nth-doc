@@ -36,11 +36,11 @@ html, body {
 }
 
 
-::-webkit-input-placeholder { /* Edge */
+::-webkit-input-placeholder { 
     color: hsl(0, 0%, 96%) !important;
 }
   
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
+:-ms-input-placeholder { 
     color: hsl(0, 0%, 96%) !important;
 }
   
@@ -202,6 +202,9 @@ table input[type=text]:focus {
     border-color: #effaf5;
     box-shadow: 0 0 3px #effaf5;
 }
+.modal-card-body select::placeholder { 
+    color: hsl(0, 0%, 96%) !important;
+}
 .modal-card-body .select select {
     background-color: #0d1117 !important; 
     border: 1px solid #30363d !important;
@@ -210,7 +213,7 @@ table input[type=text]:focus {
 .modal-card-body .select select option {
     color: hsl(0, 0%, 71%) !important;
 }
-.modal-card-body .select.is-empty::after {
+.modal-card-body .select.is-empty::after, .select:not(.is-multiple):not(.is-loading)::after {
     border-color: hsl(0, 0%, 96%) !important;
 }
 .modal-card-body label { 

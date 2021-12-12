@@ -6,13 +6,16 @@ const {
     postDocAgency,
     getDocAgencyAll,
     getDocAgency,
+    getDocAgencyAllOpen,
     updateDocAgency,
     deleteDocAgency
 } = require('../controllers/doc_agency_controller')
 
 router.route('/v1/doc/agency')
-  .get(getDocAgencyAll)
+  .get(verifyToken, getDocAgencyAll)
   .post(verifyToken, postDocAgency)
+
+router.route('/v1/doc/agency/open').get(verifyToken, getDocAgencyAllOpen)
   
 router.route('/v1/doc/agency/:agency_id')
   .get(verifyToken, getDocAgency)

@@ -2,13 +2,13 @@
    
    <div class="modal-card" style="width: 320px">
         <header class="modal-card-head">
-            <p class="modal-card-title">แผนก</p>
+            <p class="modal-card-title">หน่วยงานผู้ส่ง</p>
         </header>
         <section class="modal-card-body">
 
-            <b-field label="ชื่อแผนก *" :type="{ 'is-danger': hasDepError }" :message="{ 'กรุณากรอกชื่อแผนก': hasDepError }" >
+            <b-field label="ชื่อหน่วยงาน *" :type="{ 'is-danger': hasAgencyError }" :message="{ 'กรุณากรอกชื่อหน่วยงาน': hasAgencyError }" >
                 <b-input
-                    v-model="department"
+                    v-model="agency"
                     type="text">
                 </b-input>
             </b-field>
@@ -43,42 +43,42 @@ export default {
             type: String,
             required: true
         },
-        idDep: {
+        idAgency: {
             type: String,
             required: true
         },
-        departmentName: {
+        agencyName: {
             type: String,
             required: true
         },
-        departmentStatus: {
+        agencyStatus: {
             type: String,
             required: true
         }
     },
     data() {
        return {
-        department: this.departmentName,
-        status: this.departmentStatus,
+        agency: this.agencyName,
+        status: this.agencyStatus,
 
-        hasDepError: false,
+        hasAgencyError: false,
         dataPost: {
-            department: '',
+            agency: '',
             status: '',
         }
        }
     },
     methods: {  
         async save () {
-            this.hasDepError = false;
+            this.hasAgencyError = false;
 
-            if(this.department === '' || this.department === null) {
-                this.hasDepError = true
+            if(this.agency === '' || this.agency === null) {
+                this.hasAgencyError = true
                 return
             }
 
             this.dataPost = {
-                department: this.department,
+                agency: this.agency,
                 status: ((this.status === true || this.status === 'true')?'Y':'N')
             }
 
@@ -87,11 +87,11 @@ export default {
                 let result = ''
 
                 if(this.typeAction === 'new') {
-                    result = await this.$axios.$post(`/api/v1/department`,  this.dataPost)
+                    result = await this.$axios.$post(`/api/v1/doc/agency`,  this.dataPost)
                 } else {
-                    const id = String(this.idDep)
+                    const id = String(this.idAgency)
                     const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
-                    result = await this.$axios.$put(`/api/v1/department/`+encodeURIComponent(ciphertext),  this.dataPost)
+                    result = await this.$axios.$put(`/api/v1/doc/agency/`+encodeURIComponent(ciphertext),  this.dataPost)
                 }
                 
                 if (result) {

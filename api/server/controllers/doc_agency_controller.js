@@ -17,7 +17,8 @@ const {
   */
 const postDocAgency = async (req, res) => {
     let { 
-        agency
+        agency,
+        status
     } = req.body;  
 
   try {
@@ -27,7 +28,8 @@ const postDocAgency = async (req, res) => {
         }  
 
       let data = await DocAgency.create({
-        agency
+        agency,
+        status
       });
 
       return res.status(200).json(data);
@@ -42,7 +44,27 @@ const postDocAgency = async (req, res) => {
   * @param {object} res - The response payload sent doc agency from the method
   * @returns {object} - doc agency all
   */
-const getDocAgencyAll = async (req, res) => {
+const getDocAgencyAllOpen = async (req, res) => {
+  try {
+    const agency = await DocAgency.findAllOpen();
+    if (!agency) {
+      return errorResponse(res, 404, 'agency_04', 'agency does not exist.');
+    }
+    return res.status(200).json(agency);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+
+/**
+  * @description -This method returns detail of  doc agency
+  * @param {object} req - The request payload
+  * @param {object} res - The response payload sent doc agency from the method
+  * @returns {object} - doc agency all
+  */
+ const getDocAgencyAll = async (req, res) => {
   try {
     const agency = await DocAgency.findAll();
     if (!agency) {
@@ -53,6 +75,9 @@ const getDocAgencyAll = async (req, res) => {
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
+
+
+
 
 /**
   * @description -This method get doc agency detail
@@ -99,7 +124,8 @@ const getDocAgency = async (req, res) => {
         let id = bytes.toString(CryptoJS.enc.Utf8);
 
         let { 
-            agency
+            agency,
+            status
         } = req.body;  
   
         let existingDocAgency =  await DocAgency.countById(id);
@@ -108,7 +134,8 @@ const getDocAgency = async (req, res) => {
         }  
       
         let doc_agency =  await DocAgency.update(id, {
-            agency
+            agency,
+            status
         });
 
         return res.status(200).json(doc_agency); 
@@ -116,6 +143,8 @@ const getDocAgency = async (req, res) => {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
+
 
 /**
   * @description -This method removes doc agency
@@ -135,7 +164,17 @@ const deleteDocAgency = async (req, res) => {
       return errorResponse(res, 404, 'agency_01', 'No agency found', 'id'); 
     }  
 
-    await DocAgency.destroy(id);
+    let countWorkReceive = await DocAgency.countWorkReceive(id);
+    let countWorkSend = await DocAgency.countWorkSend(id);
+
+    if (countWorkReceive['numrow'] > 0 || countWorkSend['numrow'] > 0) {
+      let status = 'N';
+      await DocAgency.update(id, {
+        status
+      });
+    } else {
+      await DocAgency.destroy(id);
+    }
 
     return res.status(204).json();
   } catch (error) {
@@ -146,6 +185,7 @@ const deleteDocAgency = async (req, res) => {
 module.exports = {
     postDocAgency,
     getDocAgencyAll,
+    getDocAgencyAllOpen,
     getDocAgency,
     updateDocAgency,
     deleteDocAgency

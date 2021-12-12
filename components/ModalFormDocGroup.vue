@@ -2,13 +2,13 @@
    
    <div class="modal-card" style="width: 320px">
         <header class="modal-card-head">
-            <p class="modal-card-title">แผนก</p>
+            <p class="modal-card-title">หมวดหนังสือ</p>
         </header>
         <section class="modal-card-body">
 
-            <b-field label="ชื่อแผนก *" :type="{ 'is-danger': hasDepError }" :message="{ 'กรุณากรอกชื่อแผนก': hasDepError }" >
+            <b-field label="หมวดหนังสือ *" :type="{ 'is-danger': hasGroupError }" :message="{ 'กรุณากรอกหมวดหนังสือ': hasGroupError }" >
                 <b-input
-                    v-model="department"
+                    v-model="group"
                     type="text">
                 </b-input>
             </b-field>
@@ -43,42 +43,42 @@ export default {
             type: String,
             required: true
         },
-        idDep: {
+        idGroup: {
             type: String,
             required: true
         },
-        departmentName: {
+        groupName: {
             type: String,
             required: true
         },
-        departmentStatus: {
+        groupStatus: {
             type: String,
             required: true
         }
     },
     data() {
        return {
-        department: this.departmentName,
-        status: this.departmentStatus,
+        group: this.groupName,
+        status: this.groupStatus,
 
-        hasDepError: false,
+        hasGroupError: false,
         dataPost: {
-            department: '',
+            group: '',
             status: '',
         }
        }
     },
     methods: {  
         async save () {
-            this.hasDepError = false;
+            this.hasGroupError = false;
 
-            if(this.department === '' || this.department === null) {
-                this.hasDepError = true
+            if(this.group === '' || this.group === null) {
+                this.hasGroupError = true
                 return
             }
 
             this.dataPost = {
-                department: this.department,
+                group: this.group,
                 status: ((this.status === true || this.status === 'true')?'Y':'N')
             }
 
@@ -87,11 +87,11 @@ export default {
                 let result = ''
 
                 if(this.typeAction === 'new') {
-                    result = await this.$axios.$post(`/api/v1/department`,  this.dataPost)
+                    result = await this.$axios.$post(`/api/v1/doc/group`,  this.dataPost)
                 } else {
-                    const id = String(this.idDep)
+                    const id = String(this.idGroup)
                     const ciphertext = CryptoJS.AES.encrypt(id, process.env.SECRET_KEY)
-                    result = await this.$axios.$put(`/api/v1/department/`+encodeURIComponent(ciphertext),  this.dataPost)
+                    result = await this.$axios.$put(`/api/v1/doc/group/`+encodeURIComponent(ciphertext),  this.dataPost)
                 }
                 
                 if (result) {

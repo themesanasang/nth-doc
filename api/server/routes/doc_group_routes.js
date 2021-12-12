@@ -5,14 +5,17 @@ const verifyToken = require('../middleware/verify_token');
 const {
     postDocGroup,
     getDocGroupAll,
+    getDocGroupAllOpen,
     getDocGroup,
     updateDocGroup,
     deleteDocGroup
 } = require('../controllers/doc_group_controller')
 
 router.route('/v1/doc/group')
-  .get(getDocGroupAll)
+  .get(verifyToken, getDocGroupAll)
   .post(verifyToken, postDocGroup)
+
+router.route('/v1/doc/group/open').get(verifyToken, getDocGroupAllOpen)
   
 router.route('/v1/doc/group/:group_id')
   .get(verifyToken, getDocGroup)

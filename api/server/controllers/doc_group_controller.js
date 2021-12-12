@@ -36,6 +36,26 @@ const postDocGroup = async (req, res) => {
   }
 }
 
+
+/**
+  * @description -This method returns detail of  doc group
+  * @param {object} req - The request payload
+  * @param {object} res - The response payload sent doc group from the method
+  * @returns {object} - doc group all
+  */
+ const getDocGroupAllOpen = async (req, res) => {
+  try {
+    const doc = await DocGroup.findAllOpen();
+    if (!doc) {
+      return errorResponse(res, 404, 'doc_04', 'doc does not exist.');
+    }
+    return res.status(200).json(doc);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
 /**
   * @description -This method returns detail of  doc group
   * @param {object} req - The request payload
@@ -99,7 +119,8 @@ const getDocGroup = async (req, res) => {
         let id = bytes.toString(CryptoJS.enc.Utf8);
 
         let { 
-            group
+            group,
+            status
         } = req.body;  
   
         let existingDocGroup =  await DocGroup.countById(id);
@@ -108,7 +129,8 @@ const getDocGroup = async (req, res) => {
         }  
       
         let doc_group =  await DocGroup.update(id, {
-            group
+            group,
+            status
         });
 
         return res.status(200).json(doc_group); 
@@ -135,7 +157,17 @@ const deleteDocGroup = async (req, res) => {
       return errorResponse(res, 404, 'group_01', 'No group found', 'id'); 
     }  
 
-    await DocGroup.destroy(id);
+    let countWorkReceive = await DocGroup.countWorkReceive(id);
+    let countWorkSend = await DocGroup.countWorkSend(id);
+
+    if (countWorkReceive['numrow'] > 0 || countWorkSend['numrow'] > 0) {
+      let status = 'N';
+      await DocGroup.update(id, {
+        status
+      });
+    } else {
+      await DocGroup.destroy(id);
+    }
 
     return res.status(204).json();
   } catch (error) {
@@ -145,6 +177,7 @@ const deleteDocGroup = async (req, res) => {
 
 module.exports = {
     postDocGroup,
+    getDocGroupAllOpen,
     getDocGroupAll,
     getDocGroup,
     updateDocGroup,

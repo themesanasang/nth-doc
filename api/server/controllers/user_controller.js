@@ -2,6 +2,7 @@
 
 const jwt_decode = require('jwt-decode');
 const CryptoJS = require('crypto-js');
+import dateFormat from 'dateformat';
 const { v4: uuidv4 } = require('uuid');
 import { User } from '../models';
 import helpers from '../helpers/util';
@@ -21,14 +22,17 @@ const {
   * @returns {object} - user and accessToken
   */
  const loginUser = async (req, res) => {
-    const { username, password } = req.body;
     try {
-        
-        const existingUser = await User.countByUsernamePassword(username, password);
-        if(existingUser['numrow'] > 0){
-            const dataUser = await User.findByUsernamePassword(username, password);
+        const { username, password } = req.body;
 
-            const user = dataUser;
+        let bytes = CryptoJS.AES.decrypt(password, process.env.SECRET_KEY);
+        let password_post = bytes.toString(CryptoJS.enc.Utf8);
+
+        const dataUser = await User.findByUsername(username);
+        const match = await comparePasswords(password_post, dataUser[0].password);
+        
+        if(match) {
+            const user = dataUser[0];
             const token = await createToken(user);
             
             res.status(200).json({
@@ -40,36 +44,11 @@ const {
         }else{
             return errorResponse(res, 400, 'USR_01', 'data is invalid. user');
         }
-       
-
-
-        /*let bytes = CryptoTS.AES.decrypt(cid, process.env.secret_key);
-        let id = bytes.toString(CryptoTS.enc.Utf8);
-
-        let bytes2 = CryptoTS.AES.decrypt(birthday, process.env.secret_key);
-        let id2 = bytes2.toString(CryptoTS.enc.Utf8);
-
-        const existingUser = await User.findByCID(id, id2);
-    
-        if (existingUser != '') {
-            existingUser[0].hn = CryptoTS.AES.encrypt(String(existingUser[0].hn), process.env.secret_key);
-            existingUser[0].fullname = CryptoTS.AES.encrypt(String(existingUser[0].fullname), process.env.secret_key);
-
-            const user = existingUser;
-            const token = await createToken(user);
-            
-            res.status(200).json({
-                accessToken: token,
-                user,
-                expires_in: process.env.JWT_EXPIRATION
-            });
-        } else {
-            return errorResponse(res, 400, 'USR_01', 'cid is invalid.');
-        }*/
     } catch (error) {
         res.status(500).json({ error: 'Internal Server Error' });
     }
 }
+
 
 
 const getUserMe = async (req, res) => {
@@ -137,7 +116,7 @@ const postUser = async (req, res) => {
 
         return res.status(200).json(user);
     } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
+        res.status(500).json({ error: 'Internal Server Error'+error });
     }
 }
 
@@ -156,7 +135,7 @@ const getUserAll = async (req, res) => {
       }
       return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error'+error });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
@@ -178,9 +157,7 @@ const getUser = async (req, res) => {
       if (!uuid) {
         errorResponse(res, 400, 'user_01', 'id is required', 'id');
       }
-  
-      if (isNaN(uuid)) return errorResponse(res, 400, 'user_01', 'id must be a number', 'id');
-      
+
       const data = await User.findOne(uuid);
   
       if (data == '') {
@@ -189,7 +166,7 @@ const getUser = async (req, res) => {
   
       return res.status(200).json(data);
     } catch (error) {
-      res.status(500).json({ error: 'Internal Server Error'+error });
+      res.status(500).json({ error: 'Internal Server Error' });
     }
 }
 
@@ -208,8 +185,6 @@ const updateUser = async (req, res) => {
         let uuid = bytes.toString(CryptoJS.enc.Utf8);
   
         let { 
-            username,
-            password,
             firstname,
             lastname,
             email,
@@ -226,8 +201,6 @@ const updateUser = async (req, res) => {
         let updated_at = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");  
   
         let data = await User.update(uuid, {
-            username,
-            password,
             firstname,
             lastname,
             email,
@@ -244,6 +217,78 @@ const updateUser = async (req, res) => {
 }
 
 
+/**
+  * @description -This method updates a User
+  * @param {object} req - The request payload
+  * @param {object} res - The response payload
+  * @returns {object} - User
+  */
+ const disableUser = async (req, res) => {
+  try {
+      const { user_id } = req.params;
+
+      let bytes = CryptoJS.AES.decrypt(user_id, process.env.SECRET_KEY);
+      let uuid = bytes.toString(CryptoJS.enc.Utf8);
+
+      let existingUser =  await User.countByUUID(uuid);
+      if (existingUser['numrow'] == 0){
+        return errorResponse(res, 404, 'user_04', 'user does not exist.'); 
+      }  
+    
+      let status = 'N';
+      let updated_at = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");  
+
+      let data = await User.update(uuid, {
+          status, 
+          updated_at
+      });
+
+      return res.status(200).json(data); 
+  } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+/**
+  * @description -This method removes user
+  * @param {object} req - The request payload sent from the router
+  * @param {object} res - The response payload sent user from the controller
+  * @returns {array} - removes user
+  */
+ const deleteUser = async (req, res) => {
+    try {
+      const { user_id } = req.params;
+  
+      let bytes = CryptoJS.AES.decrypt(user_id, process.env.SECRET_KEY);
+      let uuid = bytes.toString(CryptoJS.enc.Utf8);
+  
+      let existingUser =  await User.countByUUID(uuid);
+      if (existingUser['numrow'] == 0){
+        return errorResponse(res, 404, 'user_01', 'No user found', 'id'); 
+      }  
+
+      let countWorkReceive = await User.countWorkReceive(uuid);
+      let countWorkSend = await User.countWorkSend(uuid);
+
+      if (countWorkReceive['numrow'] > 0 || countWorkSend['numrow'] > 0) {
+        let status = 'N';
+        let updated_at = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");  
+
+        await User.update(uuid, {
+            status, 
+            updated_at
+        });
+      } else {
+        await User.destroy(uuid);
+      }
+  
+      return res.status(204).json();
+    } catch (error) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+  }
+
 
 module.exports = {
     loginUser,
@@ -251,5 +296,7 @@ module.exports = {
     postUser,
     getUserAll,
     getUser,
-    updateUser
+    updateUser,
+    disableUser,
+    deleteUser
 }  

@@ -40,6 +40,8 @@
 </template>
 
 <script>
+import CryptoJS from 'crypto-js'
+
 export default {
   layout: 'login-layout',
   middleware: 'guest',
@@ -59,15 +61,17 @@ export default {
         return
       }
 
+      const ciphertext = CryptoJS.AES.encrypt(String(this.password), process.env.SECRET_KEY)
       const payload = {
         data: {
           username: this.username,
-          password: this.password
+          password: String(ciphertext)
         },
       }
 
       try {
         // this.$console.log(payload)
+
         this.error = false
         
         await this.$auth.loginWith('local', payload)

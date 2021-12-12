@@ -32,7 +32,7 @@ module.exports = knex => {
 
     const findAllOpen = () => knex.select('*')
         .from(tableName)
-        .whereRaw('status = Y')
+        .whereRaw('status = "Y"')
         .timeout(timeout)
 
     const findAll = () => knex.raw(' select a.*, @rownum:=@rownum + 1 AS row_num  from doc_department as a, (SELECT @rownum := 0) as r  ')
@@ -50,6 +50,9 @@ module.exports = knex => {
         .timeout(timeout)
 
     
+
+    
+
 
     return {
         name, 

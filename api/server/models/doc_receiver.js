@@ -30,9 +30,12 @@ module.exports = knex => {
         .whereRaw('id = ?', [id])
         .timeout(timeout)
 
-    const findAll = () => knex.select('*')
+    const findAllOpen = () => knex.select('*')
         .from(tableName)
+        .whereRaw('status = "Y"')
         .timeout(timeout)
+
+    const findAll = () => knex.raw(' select a.*, @rownum:=@rownum + 1 AS row_num  from doc_receiver as a, (SELECT @rownum := 0) as r  order by id desc ')
 
     const update = (id, props) => {
         return knex.update(props)
@@ -46,6 +49,17 @@ module.exports = knex => {
         .whereRaw('id = ?', [id])
         .timeout(timeout)
 
+    const countWorkReceive = (receiver) => knex.count('receiver as numrow')
+        .from('doc_receive')
+        .whereRaw('receiver = ?', [receiver])
+        .first()
+        .timeout(timeout)
+    
+    const countWorkSend = (receiver) => knex.count('receiver as numrow')
+        .from('doc_send')
+        .whereRaw('receiver = ?', [receiver])
+        .first()
+        .timeout(timeout)
     
     return {
         name, 
@@ -54,8 +68,11 @@ module.exports = knex => {
         countByReceiver,
         findOne,
         findAll,
+        findAllOpen,
         update,
-        destroy
+        destroy,
+        countWorkReceive,
+        countWorkSend
     }
     
 }
