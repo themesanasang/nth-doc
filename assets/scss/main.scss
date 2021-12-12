@@ -128,7 +128,7 @@ table input[type=text]:focus {
 .navbar-menu a {
     color: hsl(0, 0%, 96%) !important;
 }
-.navbar-menu a:hover {
+.navbar-menu a:hover, .navbar-menu a:link {
     color: hsl(0, 0%, 71%) !important;
     background: transparent !important;
 }

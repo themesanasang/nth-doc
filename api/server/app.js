@@ -31,6 +31,7 @@ app.get('/', function (req, res) {
 app.use('/', [
   require('./routes/user_routes'),
   require('./routes/doc_receive_routes'),
+  require('./routes/doc_send_routes'),
   require('./routes/doc_group_routes'),
   require('./routes/doc_agency_routes'),
   require('./routes/doc_receiver_routes'),

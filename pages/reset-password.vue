@@ -5,8 +5,8 @@
         <img src="@/assets/logo.png">
      </div>
 
-    <h1 class="has-text-white-ter has-text-centered mb-4">ระบบรับ-ส่งหนังสือราชการ</h1>
-
+    <h1 class="has-text-white-ter has-text-centered mb-4">ลืมรหัสผ่าน</h1>
+    
     <b-notification
       v-show="error"
       type="is-danger is-light"
@@ -17,22 +17,19 @@
     
     <div class="box">
         <form class="has-text-grey-light" @submit="onSubmit">
-            <b-field label="ชื่อผู้ใช้งาน" custom-class="has-text-white-ter">
-              <b-input v-model="username" custom-class="login-input-bg has-text-white-ter is-normal" focus></b-input>
+            <b-field label="อีเมล์ *" custom-class="has-text-white-ter">
+                <b-input v-model="email" type="email" custom-class="login-input-bg has-text-white-ter is-normal"></b-input>
             </b-field>
 
-            <b-field label="รหัสผ่าน" custom-class="has-text-white-ter">
-              <b-input v-model="password" type="password" custom-class="login-input-bg has-text-white-ter is-normal"></b-input>
-            </b-field>
-            <button type="submit" class="button is-block is-success is-fullwidth mt-5">เข้าสู่ระบบ</button>
+            <button type="submit" class="button is-block is-success is-fullwidth mt-5">ตกลง</button>
         </form>
     </div>
 
     <div class="box-menu">
       <div class="has-text-centered">
         <NuxtLink class="button is-ghost has-text-grey-lighter is-size-6" to="/">หน้าหลัก</NuxtLink>
+        <NuxtLink class="button is-ghost has-text-grey-lighter is-size-6" to="/login">เข้าสู่ระบบ</NuxtLink>
         <NuxtLink class="button is-ghost has-text-grey-lighter is-size-6" to="/register">สมัครใช้งาน</NuxtLink>
-        <NuxtLink class="button is-ghost has-text-grey-lighter is-size-6" to="/reset-password">?ลืมรหัสผ่าน</NuxtLink>
       </div>
     </div>
   </div>
@@ -40,45 +37,42 @@
 </template>
 
 <script>
-import CryptoJS from 'crypto-js'
+// import CryptoJS from 'crypto-js'
 
 export default {
   layout: 'login-layout',
   middleware: 'guest',
   data () {
     return {
-      username: '',
-      password: '',
+      email: '',
       error: null,
     }
   },
   methods: {
-    async onSubmit(e) {
+    onSubmit(e) {
       e.preventDefault()
 
-      if(this.username === '' || this.password === '') {
+      /* if(this.username === '' || this.password === '') {
         this.error = true
         return
-      }
+      } */
 
-      const ciphertext = CryptoJS.AES.encrypt(String(this.password), process.env.SECRET_KEY)
-      const payload = {
+      // const ciphertext = CryptoJS.AES.encrypt(String(this.password), process.env.SECRET_KEY)
+      /* const payload = {
         data: {
           username: this.username,
           password: String(ciphertext)
         },
-      }
+      } */
 
-      try {
-        // this.$console.log(payload)
-
+      /* try {
         this.error = false
         
         await this.$auth.loginWith('local', payload)
         this.$router.push('/')
       } catch (error) {
         this.error = error
-      }
+      } */
     },
   }
 }
