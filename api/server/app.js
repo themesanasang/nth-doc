@@ -35,7 +35,8 @@ app.use('/', [
   require('./routes/doc_group_routes'),
   require('./routes/doc_agency_routes'),
   require('./routes/doc_receiver_routes'),
-  require('./routes/department_routes')
+  require('./routes/department_routes'),
+  require('./routes/report_routes')
 ])
 
 

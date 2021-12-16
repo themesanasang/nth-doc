@@ -11,6 +11,9 @@
                 <b-navbar-item tag="router-link" :to="{ path: '/' }">
                     หน้าหลัก
                 </b-navbar-item>
+                <b-navbar-item v-show="isAuthenticated" tag="router-link" :to="{ path: '/reports' }">
+                    รายงาน
+                </b-navbar-item>
                 <b-navbar-item tag="router-link" :to="{ path: '/manual' }">
                     คู่มือการใช้งาน
                 </b-navbar-item>

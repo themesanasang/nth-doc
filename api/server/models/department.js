@@ -49,10 +49,6 @@ module.exports = knex => {
         .whereRaw('id = ?', [id])
         .timeout(timeout)
 
-    
-
-    
-
 
     return {
         name, 

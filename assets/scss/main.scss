@@ -48,6 +48,43 @@ html, body {
     color: hsl(0, 0%, 96%) !important;
 }
 
+//input
+.input {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+input:focus { 
+    outline: none !important;
+    border-color: #effaf5;
+    box-shadow: 0 0 3px #effaf5;
+}
+input::placeholder { 
+    color: hsl(0, 0%, 96%) !important;
+}
+
+//label
+label { 
+    color: hsl(0, 0%, 96%) !important;
+}
+
+//input select
+select::placeholder { 
+    color: hsl(0, 0%, 96%) !important;
+}
+.select select {
+    background-color: #0d1117 !important; 
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
+}
+.select select option {
+    color: hsl(0, 0%, 71%) !important;
+}
+.select.is-empty::after, .select:not(.is-multiple):not(.is-loading)::after {
+    border-color: hsl(0, 0%, 96%) !important;
+}
+
+
 
 //login
 .box .login-input-bg {
@@ -153,7 +190,7 @@ table input[type=text]:focus {
     color: hsl(0, 0%, 96%) !important;
 }
 .autocomplete .dropdown-item.is-hovered {
-    background: transparent !important;;
+    background: transparent !important;
 }
 .dropdown .navbar-item {
     padding: 0.5rem 0.2rem !important;
@@ -163,6 +200,16 @@ table input[type=text]:focus {
 } 
 .dropdown .mdi-24px.mdi:before {
     font-size: 20px !important;
+}
+
+
+//sidebar
+.b-sidebar .is-mini-expand .menu-list a {
+    color: hsl(0, 0%, 96%) !important;
+}
+.b-sidebar .is-mini-expand .menu-list a:hover, .b-sidebar .is-mini-expand .menu-list a:link {
+    color: hsl(0, 0%, 71%) !important;
+    background: transparent !important;
 }
   
 
@@ -238,6 +285,12 @@ table input[type=text]:focus {
 }
 .breadcrumb a:hover {
     text-decoration: underline !important;
+}
+.box-condition {
+    padding: 10px;
+    background-color: $primary !important;
+    border: 1px solid #30363d !important;
+    color: hsl(0, 0%, 96%) !important;
 }
 
 
