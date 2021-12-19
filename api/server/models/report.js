@@ -25,8 +25,46 @@ module.exports = knex => {
     const getSumSendYear = () => knex.raw(' select count(id) as numrow from doc_send where year(date_send)=year(now()) ').timeout(timeout)  
 
 
+    const findDataReceive = (date1, date2) => knex.select(
+        'doc_receive.book_number'
+        , knex.raw('CONCAT(DATE_FORMAT(doc_receive.date_receive, "%d-%m-"),DATE_FORMAT(doc_receive.date_receive, "%Y")+543) as date_receive') 
+        , 'doc_receive.time_receive'
+        , knex.raw('doc_agency.agency as agency_name')
+        , knex.raw('doc_receiver.receiver as receiver_name')
+        , 'doc_receive.book_name'
+        , knex.raw('CONCAT(DATE_FORMAT(doc_receive.book_date, "%d-%m-"),DATE_FORMAT(doc_receive.book_date, "%Y")+543) as date_book') 
+        , 'doc_receive.note'
+        , knex.raw('doc_group.group as group_name')
+    )
+    .from('doc_receive')
+    .leftJoin('doc_agency', 'doc_receive.agency', '=', 'doc_agency.id')
+    .leftJoin('doc_receiver', 'doc_receive.receiver', '=', 'doc_receiver.id')
+    .leftJoin('doc_group', 'doc_receive.group', '=', 'doc_group.id')
+    .leftJoin('doc_user', 'doc_receive.created_by', '=', 'doc_user.id')
+    .whereRaw('doc_receive.date_receive between "' + date1 + '" and "' + date2 + '" ')
+    .orderBy('id', 'desc')
+    .timeout(timeout)
 
 
+    const findDataSend = (date1, date2) => knex.select(
+        'doc_send.book_number'
+        , knex.raw('CONCAT(DATE_FORMAT(doc_send.date_send, "%d-%m-"),DATE_FORMAT(doc_send.date_send, "%Y")+543) as date_send') 
+        , 'doc_send.time_send'
+        , knex.raw('doc_agency.agency as agency_name')
+        , knex.raw('doc_receiver.receiver as receiver_name')
+        , 'doc_send.book_name'
+        , knex.raw('CONCAT(DATE_FORMAT(doc_send.book_date, "%d-%m-"),DATE_FORMAT(doc_send.book_date, "%Y")+543) as date_book') 
+        , 'doc_send.note'
+        , knex.raw('doc_group.group as group_name')
+    )
+    .from('doc_send')
+    .leftJoin('doc_agency', 'doc_send.agency', '=', 'doc_agency.id')
+    .leftJoin('doc_receiver', 'doc_send.receiver', '=', 'doc_receiver.id')
+    .leftJoin('doc_group', 'doc_send.group', '=', 'doc_group.id')
+    .leftJoin('doc_user', 'doc_send.created_by', '=', 'doc_user.id')
+    .whereRaw('doc_send.date_send between "' + date1 + '" and "' + date2 + '" ')
+    .orderBy('id', 'desc')
+    .timeout(timeout)
 
 
 
@@ -37,7 +75,9 @@ module.exports = knex => {
         getSumReceiveYear,
         getSumSendDay,
         getSumSendMonth,
-        getSumSendYear
+        getSumSendYear,
+        findDataReceive,
+        findDataSend
     }
     
 }

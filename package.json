@@ -34,7 +34,8 @@
     "mysql2": "^2.3.3",
     "nuxt": "^2.15.7",
     "nuxt-buefy": "^0.4.8",
-    "uuid": "^8.3.2"
+    "uuid": "^8.3.2",
+    "xlsx": "^0.17.4"
   },
   "devDependencies": {
     "@babel/eslint-parser": "^7.14.7",

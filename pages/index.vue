@@ -183,8 +183,8 @@ export default {
         ...mapGetters(['isAuthenticated']),
     },
     mounted () {
-        $(document).ready(function() {
-            $("table input[type=text]").attr('placeholder', 'ค้นหา...').blur()
+        $(function(){
+            $("table input[type=text]").attr('placeholder', 'ค้นหา...')
         })
         
         this.fetchDataReceive()

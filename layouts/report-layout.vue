@@ -18,7 +18,7 @@
                 <div class="p-1">
                     <b-menu class="is-custom-mobile">
                         <b-menu-list>
-                            <b-menu-item  tag="router-link" to="reports/report-summary" label="สรุปการ รับ-ส่ง หนังสือ" icon="note"></b-menu-item>
+                            <b-menu-item  tag="router-link" to="../reports/report-summary" label="สรุปการ รับ-ส่ง หนังสือ" icon="note"></b-menu-item>
                         </b-menu-list>
                     </b-menu>
                 </div>

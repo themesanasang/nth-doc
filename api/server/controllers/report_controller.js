@@ -1,5 +1,6 @@
 'use strict'
 
+const CryptoJS = require('crypto-js');
 import { DocReport } from '../models';
 import helpers from '../helpers/util';
 
@@ -39,9 +40,40 @@ const getSumDataBoxDashboard = async (req, res) => {
 }
 
 
+/**
+  * @description -This method get doc summary
+  * @param {object} req - The request payload sent from the router
+  * @param {object} res - The response payload sent doc summary from the controller
+  * @returns {object} - doc summary detail
+  */
+ const getDataDocSummary = async (req, res) => {
+  try {
+    const { doctype, date1, date2 } = req.params;
+
+    let bytes = CryptoJS.AES.decrypt(doctype, process.env.SECRET_KEY);
+    let type = bytes.toString(CryptoJS.enc.Utf8);
+
+    if (!type) {
+      errorResponse(res, 400, 'type_01', 'type is required', 'id');
+    }
+
+    let data = '';
+
+    if(type == 'receive') {
+      data = await DocReport.findDataReceive(date1, date2);
+    } else {
+      data = await DocReport.findDataSend(date1, date2);
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error'+error });
+  }
+}
 
 
 
 module.exports = {
-    getSumDataBoxDashboard
+  getSumDataBoxDashboard,
+  getDataDocSummary
 }
