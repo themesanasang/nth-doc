@@ -12,7 +12,6 @@
                 :expand-on-hover="expandOnHover"
                 :reduce="reduce"
                 :delay="expandWithDelay ? 500 : null"
-                type="is-primary"
                 open
             >
                 <div class="p-1">
@@ -26,6 +25,10 @@
 
             <div class="p-1 hero is-fullheight">
                 <Nuxt />
+
+                <div class="has-text-centered is-size-7 mt-5">
+                    <p>© 2021 ThemeSanasang</p>
+                </div>
             </div>
         </section>
     </div>

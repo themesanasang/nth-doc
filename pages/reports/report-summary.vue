@@ -69,6 +69,10 @@
                         aria-previous-label="Previous page"
                         aria-current-label="Current page">
 
+                        <b-table-column v-slot="props" field="id" label="เลขรับ" width="150" sortable>
+                           {{ props.row.id }}
+                        </b-table-column>
+
                         <b-table-column v-slot="props" field="book_number" label="เลขหนังสือ" width="180" sortable searchable>
                            {{ props.row.book_number }}
                         </b-table-column>
@@ -104,6 +108,10 @@
                         aria-next-label="Next page"
                         aria-previous-label="Previous page"
                         aria-current-label="Current page">
+
+                        <b-table-column v-slot="props" field="id" label="เลขส่ง" width="150" sortable>
+                           {{ props.row.id }}
+                        </b-table-column>
 
                         <b-table-column v-slot="props" field="book_number" label="เลขหนังสือ" width="180" sortable searchable>
                             {{ props.row.book_number }}

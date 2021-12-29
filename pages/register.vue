@@ -48,6 +48,11 @@
         <NuxtLink class="button is-ghost has-text-grey-lighter is-size-6" to="/reset-password">?ลืมรหัสผ่าน</NuxtLink>
       </div>
     </div>
+
+    <div class="has-text-centered is-size-7 mt-5">
+      <p>© 2021 ThemeSanasang</p>
+    </div>
+
   </div>
 
 </template>

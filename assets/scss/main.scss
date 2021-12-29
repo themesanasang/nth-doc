@@ -165,7 +165,10 @@ table input[type=text]:focus {
 .navbar-menu a {
     color: hsl(0, 0%, 96%) !important;
 }
-.navbar-menu a:hover, .navbar-menu a:link {
+.navbar-brand a:hover
+, .navbar-brand a:link
+, .navbar-menu a:hover
+, .navbar-menu a:link {
     color: hsl(0, 0%, 71%) !important;
     background: transparent !important;
 }
@@ -204,6 +207,10 @@ table input[type=text]:focus {
 
 
 //sidebar
+.b-sidebar .sidebar-content {
+    background-color: #0d1117 !important;  
+    border-right: 1px solid #30363d !important; 
+}
 .b-sidebar .is-mini-expand .menu-list a {
     color: hsl(0, 0%, 96%) !important;
 }
