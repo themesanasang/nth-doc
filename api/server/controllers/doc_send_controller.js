@@ -60,7 +60,11 @@ const {
             mm = '0'+mm;
           }
 
-          id = yearmax['yearmax']+''+mm;
+          if(yearmax['yearmax'] !== year_now.toString().substr(2)) {
+            id = year_now.toString().substr(2)+'0001';
+          } else {
+            id = yearmax['yearmax']+''+mm;
+          }
         }
       }
 

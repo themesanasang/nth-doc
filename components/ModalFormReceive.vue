@@ -247,13 +247,13 @@ export default {
             this.hasGroupidError = false
             
             const date1 = new Date(this.dateReceive)
-            const receiveD = "" + date1.getFullYear() + ((date1.getMonth() + 1) > 9 ? '' : '0') +'-'+ (date1.getMonth() + 1) +'-'+ (date1.getDate() > 9 ? '' : '0') + date1.getDate()
+            const receiveD = "" + date1.getFullYear() +'-'+ ((date1.getMonth() + 1) > 9 ? '' : '0') + (date1.getMonth() + 1) +'-'+ (date1.getDate() > 9 ? '' : '0') + date1.getDate()
             
             const time1 = new Date(this.time_receive)
             const receiveT = time1.getHours() +':'+time1.getMinutes()
 
             const date2 = new Date(this.book_date)
-            const bookD = "" + date2.getFullYear() + ((date2.getMonth() + 1) > 9 ? '' : '0') +'-'+ (date2.getMonth() + 1) +'-'+ (date2.getDate() > 9 ? '' : '0') + date2.getDate()
+            const bookD = "" + date2.getFullYear() +'-'+ ((date2.getMonth() + 1) > 9 ? '' : '0') + (date2.getMonth() + 1) +'-'+ (date2.getDate() > 9 ? '' : '0') + date2.getDate()
             
 
             if(this.agencyName === '' || this.agencyName === null) {
@@ -306,7 +306,7 @@ export default {
             }
 
             try {
-                let result = ''
+                 let result = ''
 
                 if(this.typeAction === 'new') {
                     result = await this.$axios.$post(`/api/v1/doc/receive`,  this.dataPost)

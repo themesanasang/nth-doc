@@ -59,7 +59,11 @@ const {
           mm = '0'+mm;
         }
 
-        id = yearmax['yearmax']+''+mm;
+        if(yearmax['yearmax'] !== year_now.toString().substr(2)) {
+          id = year_now.toString().substr(2)+'0001';
+        } else {
+          id = yearmax['yearmax']+''+mm;
+        }
       }
 
       let created_at = dateFormat(new Date(), "yyyy-mm-dd HH:MM:ss");
