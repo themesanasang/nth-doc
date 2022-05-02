@@ -14,8 +14,14 @@
 
                 <div class="box-condition">
                     <b-field grouped>
+                        <b-field :type="{ 'is-danger': hasTypeDocError }" :message="{ 'กรุณาเลือกประเภทหนังสือ': hasTypeDocError }">
+                            <b-select v-model="typeDoc" placeholder="เลือกประเภท" expanded>
+                                <option value="receive">รับ-หนังสือ</option>
+                                <option value="send">ส่ง-หนังสือ</option>
+                            </b-select>
+                        </b-field>
                        <b-field :type="{ 'is-danger': hasYearError }" :message="{ 'กรุณาเลือกปี': hasYearError }">
-                            <b-select v-model="reportYear" expanded>
+                            <b-select v-model="reportYear" placeholder="เลือกปี" expanded>
                                 <option
                                 v-for="(year, i) in cardYearOptions"
                                 :key="year"
@@ -60,9 +66,11 @@ export default {
     middleware: ['auth-user'],
     data() {
         return {
+            typeDoc: null,
             reportYear: DEFAULT_YEAR_VALUE()[0],
             cardYearOptions: DEFAULT_YEAR_VALUE(),
 
+            hasTypeDocError: false,
             hasYearError: false
         }
     },
@@ -72,6 +80,12 @@ export default {
     methods: {
         search () {
             this.hasTypeDocError = false;
+            this.hasYearError = false;
+
+            if(this.typeDoc === '' || this.typeDoc === null) {
+                this.hasTypeDocError = true
+                return
+            }
 
             if(this.reportYear === '--- เลือกปี ---' || this.reportYear === '' || this.reportYear === null) {
                 this.hasYearError = true

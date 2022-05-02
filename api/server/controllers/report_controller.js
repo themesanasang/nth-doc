@@ -67,7 +67,42 @@ const getSumDataBoxDashboard = async (req, res) => {
 
     return res.status(200).json(data);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error'+error });
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
+
+/**
+  * @description -This method get doc month summary
+  * @param {object} req - The request payload sent from the router
+  * @param {object} res - The response payload sent doc summary from the controller
+  * @returns {object} - doc month summary detail
+  */
+ const getDataDocMonthSummary = async (req, res) => {
+  try {
+    const { doctype, year } = req.params;
+
+    let bytes = CryptoJS.AES.decrypt(doctype, process.env.SECRET_KEY);
+    let type = bytes.toString(CryptoJS.enc.Utf8);
+
+    let bytes2 = CryptoJS.AES.decrypt(year, process.env.SECRET_KEY);
+    let year2 = bytes2.toString(CryptoJS.enc.Utf8);
+
+    if (!type) {
+      errorResponse(res, 400, 'type_01', 'type is required', 'id');
+    }
+
+    let data = '';
+
+    if(type == 'receive') {
+      data = await DocReport.findDataReceiveMonth(year2);
+    } else {
+      data = await DocReport.findDataSendMonth(year2);
+    }
+
+    return res.status(200).json(data);
+  } catch (error) {
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
 
@@ -75,5 +110,6 @@ const getSumDataBoxDashboard = async (req, res) => {
 
 module.exports = {
   getSumDataBoxDashboard,
-  getDataDocSummary
+  getDataDocSummary,
+  getDataDocMonthSummary
 }

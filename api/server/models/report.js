@@ -66,6 +66,32 @@ module.exports = knex => {
 
 
 
+    //สรุปการรับหนังสือรายเดือน
+    const findDataReceiveMonth = (year) => knex.select(
+        knex.raw('month(date_receive)') 
+        , knex.raw('count(id)')
+    )
+    .from('doc_receive')
+    .whereRaw('year(date_receive) = ?', [year])
+    .groupBy('month(date_receive)')
+    .orderBy('month(date_receive)', 'asc')
+    .timeout(timeout)
+
+    
+
+    //สรุปการส่งหนังสือรายเดือน
+    const findDataSendMonth = (year) => knex.select(
+        knex.raw('month(doc_send)') 
+        , knex.raw('count(id)')
+    )
+    .from('doc_send')
+    .whereRaw('year(doc_send) = ?', [year])
+    .groupBy('month(doc_send)')
+    .orderBy('month(doc_send)', 'asc')
+    .timeout(timeout)
+
+
+
     return {
         name, 
         getSumReceiveDay,
@@ -75,7 +101,9 @@ module.exports = knex => {
         getSumSendMonth,
         getSumSendYear,
         findDataReceive,
-        findDataSend
+        findDataSend,
+        findDataReceiveMonth,
+        findDataSendMonth
     }
     
 }
