@@ -5,7 +5,7 @@
             <b-breadcrumb align="is-left" size="is-medium">
                 <b-breadcrumb-item tag='router-link' to="/">หน้าหลัก</b-breadcrumb-item>
                 <b-breadcrumb-item tag='router-link' to="../reports">รายงาน</b-breadcrumb-item>
-                <b-breadcrumb-item tag='router-link' to="../reports/report-summary">สรุปการ รับ-ส่ง หนังสือ</b-breadcrumb-item>
+                <b-breadcrumb-item tag='router-link' to="../reports/report-summary">สรุป รับ-ส่ง หนังสือ</b-breadcrumb-item>
             </b-breadcrumb>
         </header>
 
